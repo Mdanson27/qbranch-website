@@ -26,7 +26,7 @@ Static HTML/CSS/JS, with no frameworks or package dependencies. Relative interna
 
 - 9 semantic pages plus 404 page
 - Responsive mobile navigation, sticky header, active-page state
-- Homepage-only 3.5-second cinematic code-rain animation with QBRANCH letter assembly, skip button, reduced-motion bypass and no dependencies (`assets/intro.css`, `assets/intro.js`)
+- Homepage-only 5-second binary 0/1 rain animation with QBRANCH letter assembly, skip button, reduced-motion bypass and no dependencies (`assets/intro.css`, `assets/intro.js`)
 - Accessible navigation, skip link and reduced-motion support
 - Search overlay (Ctrl/⌘ + K) with local site index
 - Product-category filters, back-to-top, scroll progress and scroll reveals
@@ -44,3 +44,6 @@ Run `python3 -m http.server 8080` in the repository root, then visit http://loca
 ## Rebuild content
 
 If needed, rerun `python3 scripts/build.py` to regenerate static HTML pages from the page generator; shared CSS and JS are in `assets/`. The generator does not replace the logo.
+
+## Responsive hero fit and binary intro (Nov 2026)
+First-view blue banners and the homepage hero size to the viewport beneath the top and navigation bars. The homepage-only 5-second intro uses 0/1 rain, reveals QBRANCH early, and brings in “Bringing Life to Technology” around second 3 so visitors can read it before the homepage opens. Skip and reduced-motion behavior remain available.

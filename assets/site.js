@@ -5,6 +5,17 @@
   const header = $('.site-header');
   const back = $('.backtop');
   const progress = $('.scroll-track');
+  // The first blue banner should end at the viewport edge on arrival.
+  const firstHero = $('.hero, .page-hero');
+  function syncFirstScreen(){
+    if(!firstHero)return;
+    const top = Math.max(0, Math.round(firstHero.getBoundingClientRect().top + window.scrollY));
+    document.documentElement.style.setProperty('--qb-hero-chrome-height', `${top}px`);
+  }
+  syncFirstScreen();
+  window.addEventListener('resize',syncFirstScreen,{passive:true});
+  window.addEventListener('pageshow',syncFirstScreen,{passive:true});
+
   let scrollPending = false;
   function onScroll(){
     if(scrollPending) return;

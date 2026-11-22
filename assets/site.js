@@ -103,4 +103,112 @@
     try{await navigator.clipboard.writeText(t);showToast('Enquiry copied. Paste it into an email to sales@qbranch.co.ug.')}catch{const ta=$('#mailto-preview');ta?.select();showToast('Select and copy the prepared enquiry below.')}
   });
   $$('a[href^="mailto:"]').forEach(a=>a.setAttribute('rel','noopener'));
+
+
+  // Page-specific cinematic binary rain. Runs ONLY inside internal-page blue mastheads.
+  // Pauses once visitors scroll past the masthead; other content stays static.
+  const pageBanner = $('.page-hero');
+  if (pageBanner) {
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const canvas = document.createElement('canvas');
+    canvas.className = 'binary-rain';
+    canvas.setAttribute('aria-hidden', 'true');
+    pageBanner.prepend(canvas);
+    const context = canvas.getContext('2d', { alpha: true });
+    if (context && !motionPreference.matches) {
+      let canvasWidth = 1;
+      let canvasHeight = 1;
+      let columns = [];
+      let active = false;
+      let visible = false;
+      let frameId = 0;
+      let lastPaint = 0;
+
+      const random = (min,max) => min + Math.random() * (max-min);
+      function resizeRain() {
+        canvasWidth = Math.max(1, pageBanner.clientWidth);
+        canvasHeight = Math.max(1, pageBanner.clientHeight);
+        const scale = Math.min(window.devicePixelRatio || 1, 1.6);
+        canvas.width = Math.ceil(canvasWidth * scale);
+        canvas.height = Math.ceil(canvasHeight * scale);
+        context.setTransform(scale, 0, 0, scale, 0, 0);
+        const gutter = canvasWidth < 620 ? 23 : 27;
+        const count = Math.min(72, Math.max(15, Math.ceil(canvasWidth / gutter)));
+        columns = Array.from({ length: count }, (_, i) => {
+          const size = canvasWidth < 620 ? random(11, 14) : random(12, 17);
+          const step = size * random(1.35, 1.70);
+          const length = Math.floor(random(5, 13));
+          return {
+            x: (i+.5)*canvasWidth/count + random(-4,4),
+            phase: random(0,canvasHeight+step*length),
+            speed: random(54,146),
+            step,
+            length,
+            size,
+            opacity: random(.55,1),
+            bits: Array.from({length},()=>Math.random()>.5?'1':'0')
+          };
+        });
+      }
+      function paint(time) {
+        if (!active) return;
+        frameId = requestAnimationFrame(paint);
+        // A capped ~30fps layer is sufficient for smooth streams without burdening mobile CPUs.
+        if (time - lastPaint < 32) return;
+        lastPaint = time;
+        context.clearRect(0,0,canvasWidth,canvasHeight);
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        for (const col of columns) {
+          const tail = col.length * col.step;
+          const cycle = canvasHeight + tail + 80;
+          const head = (col.phase + time*.001*col.speed) % cycle - tail;
+          context.font = `600 ${col.size}px ui-monospace,SFMono-Regular,Consolas,monospace`;
+          for (let i=0;i<col.length;i++) {
+            const y = head + i*col.step;
+            if (y < -col.step || y > canvasHeight+col.step) continue;
+            const pct = (i+1)/col.length;
+            // Deep-blue titles stay legible while blue/cyan glyphs glow mainly to the right.
+            const leftFactor = col.x < canvasWidth*.55 ? .38 : .95;
+            context.globalAlpha = col.opacity*leftFactor*(.07+.57*pct*pct);
+            context.fillStyle = i===col.length-1 ? '#a8ddff' : i>=col.length-3 ? '#68b8ff' : '#2d83eb';
+            context.fillText(col.bits[i],col.x,y);
+          }
+        }
+        context.globalAlpha=1;
+      }
+      function startRain() {
+        if (active || document.hidden || !visible || motionPreference.matches) return;
+        active = true;
+        lastPaint = 0;
+        frameId = requestAnimationFrame(paint);
+      }
+      function stopRain() {
+        if (!active) return;
+        active = false;
+        cancelAnimationFrame(frameId);
+      }
+      const rainObserver = 'IntersectionObserver' in window
+        ? new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            if (visible) startRain(); else stopRain();
+          }, {threshold: 0.015})
+        : null;
+      if (rainObserver) rainObserver.observe(pageBanner);
+      else { visible=true; startRain(); }
+      const rainResizeObserver = 'ResizeObserver' in window
+        ? new ResizeObserver(resizeRain)
+        : null;
+      if (rainResizeObserver) rainResizeObserver.observe(pageBanner);
+      else window.addEventListener('resize', resizeRain, {passive:true});
+      document.addEventListener('visibilitychange',()=>document.hidden?stopRain():startRain());
+      motionPreference.addEventListener?.('change',event=>{
+        if(event.matches){stopRain();context.clearRect(0,0,canvasWidth,canvasHeight)}
+        else startRain();
+      });
+      window.addEventListener('pagehide',stopRain,{once:true});
+      resizeRain();
+    } else canvas.remove();
+  }
+
 })();

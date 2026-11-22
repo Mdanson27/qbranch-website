@@ -26,7 +26,7 @@ Static HTML/CSS/JS, with no frameworks or package dependencies. Relative interna
 
 - 9 semantic pages plus 404 page
 - Responsive mobile navigation, sticky header, active-page state
-- Homepage-only 3.5-second cinematic code-rain animation with QBRANCH letter assembly, skip button, reduced-motion bypass and no dependencies (`assets/intro.css`, `assets/intro.js`)
+- Homepage-only 5-second cinematic code-rain animation with QBRANCH letter assembly, skip button, reduced-motion bypass and no dependencies (`assets/intro.css`, `assets/intro.js`)
 - Accessible navigation, skip link and reduced-motion support
 - Search overlay (Ctrl/⌘ + K) with local site index
 - Product-category filters, back-to-top, scroll progress and scroll reveals

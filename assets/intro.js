@@ -1,4 +1,4 @@
-/* Home-only 3.5 second QBranch code-rain / brand-assembly sequence. No dependencies. */
+/* Home-only 5-second QBranch code-rain / brand-assembly sequence. No dependencies. */
 (() => {
   'use strict';
   const root = document.documentElement;
@@ -9,8 +9,8 @@
   const skip = document.getElementById('qb-intro-skip');
   const progressLabel = document.getElementById('qb-intro-percent');
   const ctx = canvas && canvas.getContext('2d', { alpha: true });
-  const TOTAL = 3500;
-  const EXIT_AT = 3140;
+  const TOTAL = 5000;
+  const EXIT_AT = TOTAL - 360;
   const CHARACTERS = ['0', '1', '<', '>', '{', '}', '/', ';', '=', '+', '[', ']', '(', ')', '#'];
   const SNIPPETS = ['const', '1010', 'if()', '</>', '{data}', 'async', '0101', 'node', 'secure', 'API', '&&', 'var', '[]', 'return', 'cloud', '01'];
   const rnd = (min, max) => min + Math.random() * (max - min);
@@ -58,8 +58,8 @@
       fromX: rnd(-width * .1, width * 1.1),
       fromY: rnd(-height * .78, height * .76),
       symbol: CHARACTERS[index % CHARACTERS.length],
-      delay: rnd(580, 1100),
-      duration: rnd(1000, 1500),
+      delay: rnd(860, 1630),
+      duration: rnd(1480, 2220),
       tint: index % 5 === 0 ? '#6eb5fb' : '#1766e9'
     }));
   }
@@ -93,7 +93,7 @@
     const elapsed = now - started;
     if (elapsed >= EXIT_AT) { finish(); return; }
     ctx.clearRect(0, 0, width, height);
-    const rainFade = 1 - .7 * smooth(clamp((elapsed - 1950) / 1050));
+    const rainFade = 1 - .7 * smooth(clamp((elapsed - 2880) / 1550));
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     for (const stream of streams) {
@@ -113,7 +113,7 @@
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = `${width < 620 ? 9 : 11}px ui-monospace, SFMono-Regular, Consolas, monospace`;
-    const particleFade = 1 - smooth(clamp((elapsed - 2020) / 680));
+    const particleFade = 1 - smooth(clamp((elapsed - 2980) / 1010));
     for (const particle of particles) {
       const t = clamp((elapsed - particle.delay) / particle.duration);
       if (t <= 0 || particleFade <= 0) continue;

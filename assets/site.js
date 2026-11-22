@@ -95,8 +95,8 @@
     const link='mailto:sales@qbranch.co.ug?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message);
     const target=$('#mailto-preview');if(target)target.value=subject+'\n\n'+message;
     const fallback=$('#mail-fallback');if(fallback)fallback.hidden=false;
-    window.location.href=link;
-    showToast('Your email application should open with the enquiry. Please press Send there to deliver it.');
+    const openMail=$('#open-email');if(openMail)openMail.href=link;
+    showToast('Enquiry prepared. Open your email app or copy the message below, then press Send.');
   });
   $('#copy-enquiry')?.addEventListener('click',async()=>{
     const t=$('#mailto-preview')?.value||'';

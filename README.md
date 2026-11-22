@@ -20,7 +20,7 @@ Designed for **GitHub Pages**, publish from `main` / repository root. No build s
 
 Expected URL: https://mdanson27.github.io/qbranch-website/
 
-Static HTML/CSS/JS, with no frameworks or package dependencies. Relative internal URLs support GitHub Pages project subpaths. `Qbranch-logo.png` is the original repository logo. Google Fonts and Unsplash illustrative photos are remotely hosted; replace illustration photography with approved QBranch photos when available.
+Static HTML/CSS/JS, with no frameworks or package dependencies. Relative internal URLs support GitHub Pages project subpaths. `Qbranch-logo.png` is the original repository logo. Google Fonts and Unsplash illustrative photos are remotely hosted; original in-repository SVG illustrations provide image fallbacks. Replace illustrative photography with approved QBranch photos when available.
 
 ## Functionality
 
@@ -29,7 +29,7 @@ Static HTML/CSS/JS, with no frameworks or package dependencies. Relative interna
 - Accessible navigation, skip link and reduced-motion support
 - Search overlay (Ctrl/⌘ + K) with local site index
 - Product-category filters, back-to-top, scroll progress and scroll reveals
-- Enquiry form checks fields and prepares mail via `mailto:`; **it does not submit to a backend or automatically deliver mail**
+- Enquiry form checks fields and previews an enquiry and opens the user’s mail app via `mailto:` when requested; **it does not submit to a backend or automatically deliver mail**
 - Contact links, map search, SEO metadata and sitemap
 
 ## Important editorial notes

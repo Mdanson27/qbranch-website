@@ -47,3 +47,11 @@ If needed, rerun `python3 scripts/build.py` to regenerate static HTML pages from
 
 ## Responsive hero fit and binary intro (Nov 2026)
 First-view blue banners and the homepage hero size to the viewport beneath the top and navigation bars. The homepage-only 5-second intro uses 0/1 rain, reveals QBRANCH early, and brings in “Bringing Life to Technology” around second 3 so visitors can read it before the homepage opens. Skip and reduced-motion behavior remain available.
+
+## Rich media and interactive experience — November 2026
+- Original image library: 10 technical vector illustrations, a QBranch-themed illustrative data-center image, and a first-party 10-second muted MP4 capability montage. Media files live in `assets/visuals/`.
+- Service and technical focus cards flip via keyboard-accessible controls; product cards offer an accessible quick-view overlay. All cards have subtle hover/focus glow and photography or original fallbacks.
+- Home page also has a visual capabilities gallery, video with native controls and pause-when-hidden behavior, and a technology-brand catalogue strip.
+- 'Technology brands' are product-brand references, **not verified partnership/authorised reseller claims**. Yodgy, IBM Media, Green Host and Atomic SEO logos were not imported as partners because the same carousel appears on unrelated template sites.
+- Visuals and video are illustrative, not representations of QBranch client installations. See `MEDIA_SOURCES.md` for sources and accuracy notes.
+- `scripts/build.py` preserves the shared site CSS/JS imports on regeneration.

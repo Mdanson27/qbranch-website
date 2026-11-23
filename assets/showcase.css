@@ -1,0 +1,106 @@
+/* QBranch experience layer: progressive enhancement of the existing semantic site. */
+:root{--experience-blue:#0a6bfa;--experience-cyan:#43d1ff;--experience-ink:#061a3c}
+.experience-kicker{font:800 11px/1.5 Manrope,Arial,sans-serif;color:#177df3;text-transform:uppercase;letter-spacing:.2em}
+.experience-subheading{color:#667b99;line-height:1.75;max-width:720px}
+.experience-media{position:relative;overflow:hidden;background:#071c39}
+.experience-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .85s cubic-bezier(.2,.7,.2,1),filter .7s ease}
+.experience-media::after{content:"";pointer-events:none;position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(5,18,42,.24));opacity:.7}
+/* Distinct visual and focused interaction state for all cards. */
+.service-card,.project-card,.product-card,.detail-card,.industry-card,.step-card{transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease,background .35s ease!important}
+.service-card:hover,.service-card:focus-within,.project-card:hover,.project-card:focus-within,.product-card:hover,.product-card:focus-within,.detail-card:hover,.detail-card:focus-within,.industry-card:hover,.industry-card:focus-within{transform:translateY(-6px);box-shadow:0 23px 68px rgba(19,91,197,.18),0 0 0 1px rgba(44,150,255,.27);border-color:#7abbff!important}
+.product-card:hover .experience-media img,.project-card:hover .experience-media img,.detail-card:hover .experience-media img,.industry-card:hover .experience-media img{transform:scale(1.07);filter:saturate(1.2)}
+.experience-flip{perspective:1300px;display:block!important;overflow:visible!important;padding:0!important;border:none!important;min-height:388px;background:transparent!important;box-shadow:none!important;transform:translateY(0)}
+.experience-flip:hover,.experience-flip:focus-within{box-shadow:none!important;transform:translateY(-5px)}
+.experience-flip .flip-inner{position:relative;width:100%;height:100%;min-height:388px;transform-style:preserve-3d;transition:transform .72s cubic-bezier(.25,.65,.25,1)}
+.experience-flip.is-flipped .flip-inner{transform:rotateY(180deg)}
+.experience-flip .flip-face{position:absolute;inset:0;padding:21px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #dce8f8;border-radius:22px;background:#fff;box-shadow:0 12px 36px rgba(21,52,94,.055);display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.experience-flip .flip-front .experience-media{margin:-21px -21px 17px;height:150px;flex-shrink:0}
+.experience-flip .flip-front h3{font-size:1.07rem;margin:5px 0 9px}
+.experience-flip .flip-front p{font-size:.82rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 12px}
+.experience-flip .flip-front .service-icon{display:none}
+.experience-flip .flip-front .arrow-link{font-size:.79rem;line-height:1.3;margin-top:auto}
+.experience-flip .flip-front .flip-toggle{margin-top:12px}
+.experience-flip .flip-back{transform:rotateY(180deg);background:radial-gradient(circle at 100% 0%,rgba(37,154,255,.18),transparent 60%),linear-gradient(130deg,#061935,#0b3170);color:#fff;border-color:#2f91f8}
+.experience-flip .flip-back h3{font-size:1.25rem;color:#fff;margin:14px 0}
+.experience-flip .flip-back .experience-kicker{color:#69d7ff}
+.experience-flip .flip-back ul{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:10px}
+.experience-flip .flip-back li{font-size:.85rem;line-height:1.5;color:#d6e9ff;display:flex;gap:9px;align-items:flex-start}
+.experience-flip .flip-back li::before{content:'✓';color:#78e5ff;font-weight:900}
+.experience-flip .flip-back .back-actions{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.experience-flip .flip-back a{color:#fff;border-bottom:1px solid #70c8ff;font-size:.83rem;font-weight:800}
+.flip-toggle,.quick-look,.experience-play{appearance:none;border:1px solid #c1d9fa;background:#eff6ff;color:#1455a4;border-radius:100px;padding:8px 13px;font-size:.74rem;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:max-content;max-width:100%;cursor:pointer;transition:background .2s,color .2s,transform .2s;line-height:1.25}
+.flip-toggle:hover,.quick-look:hover,.experience-play:hover{background:#146af0;color:#fff;transform:translateY(-2px)}
+.flip-back .flip-toggle{color:#dff7ff;background:#103c76;border-color:#356caa}
+.flip-back .flip-toggle:hover{background:#e6f4ff;color:#0c3e82}
+.experience-flip .flip-front .experience-media img{transition:transform .7s ease}
+.experience-flip:hover .flip-front .experience-media img{transform:scale(1.055)}
+/* Project tiles use original branded editorial images and active flips. */
+.project-card.experience-flip{min-height:400px}
+.project-card.experience-flip .flip-inner{min-height:400px}
+.project-card.experience-flip .flip-front .experience-media{height:190px}
+.project-card.experience-flip .flip-front .project-body{padding:0;background:transparent}
+.project-card.experience-flip .flip-front .project-body h3{margin:8px 0}
+.project-card.experience-flip .flip-front .project-body p{font-size:.82rem}
+.project-card.experience-flip .flip-front .project-art{display:none}
+.project-card.experience-flip .flip-front .flip-toggle{margin-top:auto}
+/* Product catalogue: photo-led cards and an accessible quick-look button. */
+.product-card .product-art{height:185px;display:block;overflow:hidden;position:relative;padding:0!important;background:#071831!important}
+.product-card .product-art .experience-media{height:100%;width:100%}
+.product-card .product-art>svg{display:none}
+.product-card .product-body{display:flex;flex-direction:column;align-items:flex-start}
+.product-card .product-body .arrow-link{margin-top:auto}
+.product-card .product-body .quick-look{margin-top:13px}
+.detail-card .detail-media{height:165px;margin:-34px -34px 24px;border-radius:18px 18px 0 0}
+.industry-card .industry-media{height:170px;margin:-28px -28px 19px}
+.experience-viewer[hidden]{display:none!important}
+.experience-viewer{position:fixed;z-index:90000;inset:0;background:rgba(2,10,29,.78);backdrop-filter:blur(14px);padding:20px;display:grid;place-items:center}
+.experience-viewer-panel{position:relative;background:#fff;color:#0a2246;border:1px solid #d7e5fa;border-radius:24px;box-shadow:0 40px 100px rgba(0,0,0,.4);max-width:850px;width:100%;max-height:min(90dvh,780px);overflow:auto;display:grid;grid-template-columns:.95fr 1fr}
+.experience-viewer-panel>img{width:100%;height:100%;min-height:350px;object-fit:cover;background:#0c2853;border-radius:23px 0 0 23px}
+.experience-viewer-copy{padding:48px 34px;display:flex;flex-direction:column;justify-content:center}
+.experience-viewer-copy h2{font-size:clamp(1.65rem,3vw,2.4rem);margin:10px 0}
+.experience-viewer-copy p{line-height:1.8}
+.experience-viewer-copy a{margin-top:16px}
+.experience-viewer-close{position:absolute;z-index:2;right:14px;top:14px;display:grid;place-items:center;width:38px;height:38px;border:none;border-radius:50%;background:#e7f2ff;color:#072e70;font-size:23px}
+body.experience-dialog-open{overflow:hidden}
+/* The actual imagery, clip, and technical terms are illustrative, not claimed client deliverables. */
+.experience-film{padding:90px 0;background:linear-gradient(135deg,#f4faff,#fff 56%,#edf6ff)}
+.experience-film-layout{display:grid;grid-template-columns:.86fr 1.14fr;align-items:center;gap:clamp(26px,5vw,76px)}
+.experience-film-copy h2{font-size:clamp(2.2rem,4.5vw,4.2rem);line-height:1.13;margin:18px 0 20px}
+.experience-film-copy p{color:#617794;line-height:1.85}
+.experience-film-copy .clip-tags{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}
+.clip-tags span{font-size:11px;font-weight:800;color:#1862ad;background:#e3f1ff;border:1px solid #cde5ff;border-radius:90px;padding:7px 10px}
+.experience-film-frame{position:relative;aspect-ratio:16/9;background:#051934;overflow:hidden;border-radius:24px;box-shadow:0 30px 80px rgba(6,41,97,.24);border:6px solid #fff;isolation:isolate}
+.experience-film-frame::before{content:"";position:absolute;inset:0;pointer-events:none;border:1px solid rgba(112,203,255,.3);border-radius:18px;z-index:2}
+.experience-film-frame video{width:100%;height:100%;object-fit:cover;display:block;background:#09284a}
+.experience-film-note{font-size:11px!important;line-height:1.5!important;color:#7988a4!important;margin-top:12px}
+.experience-mosaic{padding:75px 0;background:#06172e;color:#fff;overflow:hidden}
+.experience-mosaic h2{color:#fff;font-size:clamp(2rem,3.6vw,3.3rem);margin:12px 0}
+.experience-mosaic p{color:#bfd4ec}
+.experience-mosaic-grid{margin-top:32px;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:16px}
+.experience-mosaic-item{position:relative;min-height:270px;border-radius:18px;overflow:hidden;background:#0c3067;display:flex;align-items:end;text-decoration:none;isolation:isolate;transition:transform .3s ease,box-shadow .3s ease}
+.experience-mosaic-item:hover,.experience-mosaic-item:focus-visible{transform:translateY(-5px);box-shadow:0 12px 40px rgba(43,174,255,.22)}
+.experience-mosaic-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease;z-index:-2}
+.experience-mosaic-item:hover img{transform:scale(1.09)}
+.experience-mosaic-item:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(1,12,35,.92),rgba(1,12,35,.08) 83%);z-index:-1}
+.experience-mosaic-item>span{padding:24px 27px;color:#fff;font-weight:800;font-size:1.12rem}
+.experience-mosaic-item>span small{display:block;color:#9cdaff;font-size:.66rem;letter-spacing:.17em;margin-bottom:9px}
+.experience-mosaic-item:first-child{grid-row:span 2;min-height:555px}
+/* Brand logos represent brands in the published product range, not partnerships. */
+.technology-brands{padding:67px 0;background:#fff}
+.technology-brands .section-head{margin-bottom:23px}
+.technology-brands .brand-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.brand-tile{border:1px solid #e2e9f4;border-radius:14px;min-height:86px;display:flex;align-items:center;justify-content:center;gap:13px;padding:13px 12px;background:#f9fbff;transition:transform .25s,border-color .25s,box-shadow .25s}
+.brand-tile:hover{transform:translateY(-4px);border-color:#82b7fc;box-shadow:0 12px 28px rgba(42,112,207,.12)}
+.brand-tile img{height:30px;max-width:43px;object-fit:contain}
+.brand-tile span{font-size:13px;font-weight:800;color:#17365f}
+.brand-qualification{font-size:11px;color:#697b95;margin:20px 0 0}
+@media(max-width:1000px){.experience-film-layout{grid-template-columns:1fr;gap:25px}.experience-mosaic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.experience-mosaic-item:first-child{grid-row:span 1;min-height:280px}.technology-brands .brand-row{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){.experience-film{padding:65px 0}.experience-film-frame{border-width:4px}.experience-mosaic{padding:55px 0}.experience-mosaic-grid{grid-template-columns:1fr 1fr;gap:10px}.experience-mosaic-item,.experience-mosaic-item:first-child{min-height:200px}.experience-mosaic-item>span{padding:17px;font-size:.89rem}.technology-brands .brand-row{grid-template-columns:repeat(2,1fr)}.experience-viewer-panel{grid-template-columns:1fr;max-width:520px}.experience-viewer-panel>img{height:220px;min-height:0;border-radius:23px 23px 0 0}.experience-viewer-copy{padding:25px}.experience-flip,.experience-flip .flip-inner{min-height:405px}.experience-flip .flip-face{padding:18px}.experience-flip .flip-front .experience-media{margin:-18px -18px 18px}.detail-card .detail-media{margin:-25px -19px 19px}.industry-card .industry-media{margin:-20px -20px 19px}}
+@media(max-width:460px){.experience-mosaic-grid{grid-template-columns:1fr}.experience-mosaic-item,.experience-mosaic-item:first-child{min-height:220px}.brand-tile{min-height:72px}.experience-flip,.experience-flip .flip-inner{min-height:418px}}
+@media(prefers-reduced-motion:reduce){.experience-flip .flip-inner,.experience-media img,.brand-tile,.experience-mosaic-item,.service-card,.project-card,.product-card,.industry-card,.detail-card{transition:none!important}.experience-flip.is-flipped .flip-inner{transform:none!important}.experience-flip.is-flipped .flip-front{visibility:hidden}.experience-flip:not(.is-flipped) .flip-back{visibility:hidden}}
+
+/* Contain fixed/3-D decorative layers on small viewports. */
+html{overflow-x:clip}
+@media(max-width:700px){.service-card.experience-flip,.project-card.experience-flip{contain:layout style}.experience-film-layout>*{min-width:0}}
+/* First-party conceptual hero imagery avoids blank banners when photography CDNs are blocked. */
+.hero-photo{background-image:linear-gradient(0deg,rgba(4,18,42,.72),rgba(4,18,42,.08) 70%),url('visuals/qbranch-technology-concept.webp')!important;background-size:cover!important;background-position:65% center!important}

@@ -104,3 +104,10 @@ html{overflow-x:clip}
 @media(max-width:700px){.service-card.experience-flip,.project-card.experience-flip{contain:layout style}.experience-film-layout>*{min-width:0}}
 /* First-party conceptual hero imagery avoids blank banners when photography CDNs are blocked. */
 .hero-photo{background-image:linear-gradient(0deg,rgba(4,18,42,.72),rgba(4,18,42,.08) 70%),url('visuals/qbranch-technology-concept.webp')!important;background-size:cover!important;background-position:65% center!important}
+
+/* Content-first detail mode replaces generic repeated image placeholders. */
+.experience-viewer-panel{grid-template-columns:1fr!important;max-width:560px!important}
+.experience-viewer-copy{padding:38px!important}
+.experience-flip.no-card-photo .flip-front .project-art{display:grid!important}
+.experience-flip.no-card-photo .flip-front{justify-content:flex-start}
+.product-card.no-product-photo .product-art>svg{display:block!important}

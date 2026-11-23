@@ -31,3 +31,11 @@ Yodgy / IBM Media / Green Host / Atomic SEO appear in several unrelated websites
 - Local illustrations, a first-party WebP and MP4 are shipped in GitHub Pages (site can render useful imagery without access to photo or logo CDNs).
 - Only video metadata is preloaded. Playback occurs when it enters the viewport unless `prefers-reduced-motion` is enabled. Native controls allow a visitor to pause or replay.
 - All product catalogue claims, availability and client/project attributions still need QBranch verification.
+
+## 23 November 2026: Curated imagery and geographic visualization
+
+- The previous generic five-image "CAPABILITY / 01" gallery was removed rather than reusing the same vector art across the site.
+- `assets/refinement.js` renders the Earth using actual latitude/longitude country outlines. `assets/visuals/world-earth.json` is simplified from Natural Earth 1:110m public-domain boundaries, bundled with Pyogrio; simplified locally by `scripts/build_globe_geo.py`. Uganda is identified at approximately 1.37° N, 32.29° E and its actual outline is highlighted. The design is illustrative, not a precise legal boundary map.
+- The homepage's QBRANCH loader uses falling binary characters as a particle mask matching the position of the actual brand lettering, then illuminates that same lettering; its tagline appears near the 3-second mark in the retained 5-second sequence.
+- Selected photographic cards are assigned a **unique** Unsplash URL for the specific service/product description, without reusing any photo ID. If that photo cannot load, the card displays its existing service icon and text, not an unrelated illustration. Remaining detail, project and industry cards intentionally use clear textual content and their own icons.
+- Existing photographs are illustrative stock media, **not** claims of actual QBranch employees, partners, or completed customer installations. Before official brand migration, the company can replace them with its own approved assets.

@@ -1,0 +1,49 @@
+/* Intentional QBranch visual refinement: one globe, purposeful imagery, no repeated placeholders. */
+.qb-globe-visual{position:relative;display:grid;place-items:center;isolation:isolate;min-height:0!important;height:min(625px,calc(var(--hero-available,760px) - 55px));aspect-ratio:1/1;width:100%;max-width:675px;margin-inline:auto;overflow:visible}
+.qb-globe-visual::before{content:"";position:absolute;inset:8% 4%;border:1px solid rgba(57,177,255,.13);border-radius:50%;transform:rotate(-26deg) scaleY(.65);pointer-events:none;box-shadow:0 0 34px rgba(13,141,241,.08)}
+.qb-globe-visual::after{content:"";position:absolute;inset:8% 4%;border:1px solid rgba(88,187,255,.18);border-radius:50%;transform:rotate(27deg) scaleY(.7);pointer-events:none}
+.globe-radiance{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 52% 48%,rgba(27,117,243,.28),transparent 55%);filter:blur(20px);pointer-events:none}
+.qb-earth{width:100%;height:100%;display:block;position:relative;z-index:1;filter:drop-shadow(0 12px 34px rgba(0,115,230,.24))}
+.globe-location{position:absolute;z-index:4;left:6%;bottom:4%;display:flex;align-items:center;gap:12px;padding:13px 17px;border:1px solid rgba(95,197,255,.32);border-radius:14px;background:rgba(3,28,65,.8);box-shadow:0 14px 34px rgba(0,0,0,.16);backdrop-filter:blur(12px)}
+.globe-location b{display:block;color:#c6f8ff;font:800 10px/1.4 ui-monospace,monospace;letter-spacing:.15em}
+.globe-location small{display:block;color:#b6d9ef;font-size:11px;margin-top:2px}
+.location-beacon{width:9px;height:9px;flex-shrink:0;background:#70fff1;border-radius:100%;box-shadow:0 0 0 6px rgba(89,243,228,.13),0 0 20px rgba(66,255,240,.85);animation:qb-uganda-pulse 2.2s ease-in-out infinite}
+@keyframes qb-uganda-pulse{50%{box-shadow:0 0 0 9px rgba(89,243,228,.06),0 0 27px rgba(66,255,240,1)}}
+/* Re-use the original QBranch-specific image just once, in the homepage editorial section. */
+body[data-page="index"] .feature-photo:not(.secondary-photo){background-image:linear-gradient(0deg,rgba(5,20,51,.17),rgba(5,20,51,.09)),url('visuals/qbranch-technology-concept.webp')!important;background-position:65% center;background-size:cover}
+/* Avoid repeating stock shots in secondary overlapping picture frames site-wide. */
+.feature-photo.secondary-photo{display:none!important}
+.feature-visual .feature-photo:not(.secondary-photo){inset:0!important;border-radius:24px!important}
+body[data-page="about"] .feature-photo:not(.secondary-photo){background-image:linear-gradient(0deg,rgba(6,20,39,.18),rgba(6,20,39,.03)),url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1100&q=82')!important}
+body[data-page="solutions"] .feature-photo:not(.secondary-photo){background-image:linear-gradient(0deg,rgba(6,20,39,.18),rgba(6,20,39,.03)),url('https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1100&q=82')!important}
+body[data-page="products"] .feature-photo:not(.secondary-photo){background-image:linear-gradient(0deg,rgba(6,20,39,.18),rgba(6,20,39,.03)),url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1100&q=82')!important}
+/* Cards without a verified, correctly matched image show content—never an invented image placeholder. */
+.experience-flip.no-card-photo .flip-front{padding-top:31px}
+.experience-flip.no-card-photo .flip-front .service-icon{display:grid}
+.experience-flip.no-card-photo .flip-front .experience-media{display:none}
+.project-card.experience-flip.no-card-photo .flip-front .project-art{display:grid;min-height:92px;height:92px;padding:18px;background:linear-gradient(135deg,#edf6ff,#daeafe);border-radius:12px;margin-bottom:14px}
+.project-card.experience-flip.no-card-photo .flip-front .project-art svg{width:36px;height:36px;margin:auto;color:#1759b0}
+.project-card.experience-flip.no-card-photo .flip-front .project-body{padding:0}
+.product-card.no-product-photo .product-art{height:70px;background:#f2f7fe!important;border-radius:12px;margin:22px 22px 0;padding:10px!important;display:grid;place-items:center}
+.product-card.no-product-photo .product-art>svg{display:block;width:38px;height:38px;color:#1563b9}
+.detail-card .experience-media,.industry-card .experience-media{display:none!important}
+@media(max-width:990px){.qb-globe-visual{max-width:585px;height:min(510px,70vw)}.hero-inner{gap:8px}}
+@media(max-width:600px){.qb-globe-visual{height:min(370px,93vw);width:100%;max-width:400px;min-height:0!important;margin-top:6px}.globe-location{bottom:0;left:5%;padding:10px 13px}.globe-location small{font-size:9px}.globe-location b{font-size:8px}}
+@media(max-height:660px) and (min-width:991px){.qb-globe-visual{height:min(440px,calc(100svh - 125px))}.globe-location{bottom:0}}
+@media(prefers-reduced-motion:reduce){.location-beacon{animation:none!important}}
+/* Binary digits build the actual brand lettering; the final lettering ignites in place. */
+.qb-intro-content{margin-top:0!important}
+.qb-intro-icon,.qb-intro-command,.qb-intro-cursor{display:none!important}
+.qb-intro-brand{position:relative;z-index:2;margin:0!important;opacity:0;transform:none;filter:none;text-shadow:none;animation:qb-word-ignite .65s cubic-bezier(.15,.75,.22,1) 1.72s forwards!important}
+@keyframes qb-word-ignite{0%{opacity:0;filter:blur(6px) brightness(2);text-shadow:0 0 30px rgba(0,121,255,0)}45%{opacity:.95;filter:blur(0) brightness(1.25);text-shadow:0 0 33px rgba(38,145,255,.9),0 0 62px rgba(50,194,255,.42)}100%{opacity:1;filter:none;text-shadow:0 0 15px rgba(43,151,255,.35),0 0 30px rgba(43,151,255,.12)}}
+.qb-intro-legal{animation:qb-enter .4s ease 2.06s forwards!important}
+.qb-intro-tagline{opacity:0;animation:qb-slogan .18s ease 2.92s forwards!important}
+@keyframes qb-slogan{to{opacity:1;transform:translateY(0)}}
+.qb-intro-meter{margin-top:42px!important}
+@media(prefers-reduced-motion:reduce){.qb-intro-brand,.qb-intro-tagline,.location-beacon{animation:none!important}}
+/* Project focus cards are text-first, with compact semantically meaningful icons. */
+.project-card.experience-flip.no-card-photo,
+.project-card.experience-flip.no-card-photo .flip-inner{min-height:320px!important}
+.project-card.experience-flip.no-card-photo .flip-front .project-art{display:flex!important;align-items:center;justify-content:center;width:58px!important;height:58px!important;min-height:58px!important;padding:12px!important;margin:0 0 16px!important;border-radius:15px!important;background:#eaf3ff!important}
+.project-card.experience-flip.no-card-photo .flip-front .project-art svg{width:30px!important;height:30px!important;color:#155fbb}
+.project-card.experience-flip.no-card-photo .flip-front .flip-toggle{margin-top:auto}

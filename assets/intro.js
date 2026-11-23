@@ -1,166 +1,93 @@
-/* Home-only 5-second QBranch code-rain / brand-assembly sequence. No dependencies. */
+/* QBranch: 5-second accessible binary-to-word assembly. The code forms the actual brand. */
 (() => {
   'use strict';
-  const root = document.documentElement;
-  const intro = document.getElementById('qb-intro');
-  if (!intro || !root.classList.contains('qb-intro-enabled')) return;
-
-  const canvas = document.getElementById('qb-intro-canvas');
-  const skip = document.getElementById('qb-intro-skip');
-  const progressLabel = document.getElementById('qb-intro-percent');
-  const ctx = canvas && canvas.getContext('2d', { alpha: true });
-  const TOTAL = 5000;
-  const EXIT_AT = TOTAL - 360;
-  const CHARACTERS = ['0', '1'];
-  const SNIPPETS = ['0', '1'];
-  const rnd = (min, max) => min + Math.random() * (max - min);
-  let width = 0;
-  let height = 0;
-  let raf = 0;
-  let streams = [];
-  let particles = [];
-  let stopped = false;
-  let ending = false;
-  let exitTimer;
-  const started = performance.now();
-
-  function sampleWord() {
-    const offscreen = document.createElement('canvas');
-    const size = Math.max(36, Math.min(width / 8.7, height / 3.9, 120));
-    offscreen.width = Math.ceil(Math.min(width * .92, 1050));
-    offscreen.height = Math.ceil(size * 1.55);
-    const measure = offscreen.getContext('2d', { willReadFrequently: true });
-    if (!measure) return [];
-    measure.font = `900 ${size}px Arial, sans-serif`;
-    measure.textAlign = 'center';
-    measure.textBaseline = 'middle';
-    measure.fillStyle = '#000';
-    measure.fillText('QBRANCH', offscreen.width / 2, offscreen.height / 2);
-    const data = measure.getImageData(0, 0, offscreen.width, offscreen.height).data;
-    const gap = width < 620 ? 5 : 8;
-    const targets = [];
-    for (let y = 0; y < offscreen.height; y += gap) {
-      for (let x = 0; x < offscreen.width; x += gap) {
-        if (data[(y * offscreen.width + x) * 4 + 3] > 100 && Math.random() < .8) {
-          targets.push({ x: (width - offscreen.width) / 2 + x, y: height * .50 - offscreen.height * .5 + y });
-        }
-      }
-    }
-    // Keep the particle count small enough for older mobile devices.
-    const max = width < 620 ? 225 : 490;
-    for (let i = targets.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [targets[i], targets[j]] = [targets[j], targets[i]];
-    }
-    return targets.slice(0, max).map((pos, index) => ({
-      x: pos.x,
-      y: pos.y,
-      fromX: rnd(-width * .1, width * 1.1),
-      fromY: rnd(-height * .78, height * .76),
-      symbol: CHARACTERS[index % CHARACTERS.length],
-      delay: rnd(90, 520),
-      duration: rnd(650, 1050),
-      tint: index % 5 === 0 ? '#6eb5fb' : '#1766e9'
+  const root=document.documentElement, intro=document.getElementById('qb-intro');
+  if(!intro||!root.classList.contains('qb-intro-enabled'))return;
+  const canvas=document.getElementById('qb-intro-canvas'),brand=intro.querySelector('.qb-intro-brand');
+  const progress=intro.querySelector('#qb-intro-percent'),skip=intro.querySelector('#qb-intro-skip');
+  const ctx=canvas?.getContext('2d',{alpha:true});
+  const TOTAL=5000, EXIT_AT=TOTAL-360;
+  const rnd=(a,b)=>a+Math.random()*(b-a),clamp=t=>Math.max(0,Math.min(1,t)),ease=t=>t*t*(3-2*t);
+  let w=0,h=0,streams=[],particles=[],raf=0,timer=0,ending=false,stopped=false;
+  const started=performance.now();
+  function assembleWord(){
+    if(!brand||!ctx)return [];
+    const rect=brand.getBoundingClientRect(),style=getComputedStyle(brand);
+    const fontSize=parseFloat(style.fontSize)||80,mask=document.createElement('canvas');
+    mask.width=Math.max(1,Math.ceil(rect.width));mask.height=Math.max(1,Math.ceil(rect.height));
+    const measure=mask.getContext('2d',{willReadFrequently:true});
+    if(!measure)return [];
+    measure.font=`800 ${fontSize}px ${style.fontFamily}`;
+    if('letterSpacing'in measure)measure.letterSpacing=style.letterSpacing;
+    measure.textAlign='center';measure.textBaseline='middle';measure.fillStyle='#000';
+    measure.fillText('QBRANCH',mask.width/2,mask.height/2);
+    const pixels=measure.getImageData(0,0,mask.width,mask.height).data;
+    const size=w<600?5:7,spots=[];
+    for(let y=1;y<mask.height;y+=size){for(let x=1;x<mask.width;x+=size){
+      if(pixels[(y*mask.width+x)*4+3]>110)spots.push({x:rect.left+x,y:rect.top+y});
+    }}
+    for(let i=spots.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[spots[i],spots[j]]=[spots[j],spots[i]]}
+    return spots.slice(0,w<600?440:950).map((p,i)=>({
+      x:p.x,y:p.y,fx:rnd(0,w),fy:rnd(-h*.7,h*.8),
+      delay:rnd(65,350),duration:rnd(640,1100),glyph:i%2?'1':'0',alpha:rnd(.74,1)
     }));
   }
-
-  function setup() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    if (!ctx) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.min(66, Math.max(22, Math.round(width / 28)));
-    streams = Array.from({ length: count }, (_, i) => ({
-      x: (i + .35 + rnd(-.30, .30)) * width / count,
-      y: rnd(-height * 1.5, -30),
-      speed: rnd(115, 325),
-      spacing: rnd(18, 25),
-      glyphs: Array.from({ length: Math.floor(rnd(10, 20)) }, () => SNIPPETS[Math.floor(Math.random() * SNIPPETS.length)]),
-      alpha: rnd(.25, .59),
-      size: rnd(10, 14)
+  function setup(){
+    if(ending||!ctx)return;
+    w=innerWidth;h=innerHeight;
+    const dpr=Math.min(devicePixelRatio||1,2);
+    canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const count=Math.min(62,Math.max(18,Math.round(w/30)));
+    streams=Array.from({length:count},(_,i)=>({
+      x:(i+.3+rnd(-.25,.25))*w/count,y:rnd(-h*1.2,0),speed:rnd(80,235),gap:rnd(17,24),
+      len:Math.floor(rnd(8,18)),alpha:rnd(.11,.34),size:rnd(10,13),seed:Math.round(rnd(0,400))
     }));
-    particles = sampleWord();
+    particles=assembleWord();
   }
-
-  function clamp(n) { return Math.max(0, Math.min(1, n)); }
-  function smooth(t) { return t * t * (3 - 2 * t); }
-
-  function draw(now) {
-    if (stopped || !ctx) return;
-    const elapsed = now - started;
-    if (elapsed >= EXIT_AT) { finish(); return; }
-    ctx.clearRect(0, 0, width, height);
-    const rainFade = 1 - .36 * smooth(clamp((elapsed - 3800) / 760));
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    for (const stream of streams) {
-      const travel = ((elapsed / 1000) * stream.speed);
-      const span = height + stream.spacing * stream.glyphs.length + 200;
-      const baseY = ((stream.y + travel + span) % span) - stream.spacing * stream.glyphs.length;
-      ctx.font = `600 ${stream.size}px ui-monospace, SFMono-Regular, Consolas, monospace`;
-      for (let j = 0; j < stream.glyphs.length; j++) {
-        const y = baseY + j * stream.spacing;
-        if (y < -36 || y > height + 20) continue;
-        ctx.globalAlpha = stream.alpha * rainFade * (.23 + .77 * (j + 1) / stream.glyphs.length);
-        ctx.fillStyle = j === stream.glyphs.length - 1 ? '#064db6' : '#2a7de1';
-        ctx.fillText(stream.glyphs[j], stream.x, y);
+  function render(now){
+    if(stopped||ending||!ctx)return;
+    const t=now-started;
+    if(t>=EXIT_AT){finish();return}
+    ctx.clearRect(0,0,w,h);
+    // Binary background is scenery; only the particles below build the letters.
+    const rainOpacity=1-.46*ease(clamp((t-1900)/1800));
+    for(const s of streams){
+      const span=h+s.len*s.gap+200,firstY=((s.y+(t/1000)*s.speed+span)%span)-s.len*s.gap;
+      ctx.font=`600 ${s.size}px ui-monospace,monospace`;ctx.textBaseline='middle';ctx.textAlign='center';
+      for(let j=0;j<s.len;j++){
+        const y=firstY+j*s.gap;if(y<0||y>h)continue;
+        ctx.globalAlpha=s.alpha*rainOpacity*(.25+.75*j/s.len);
+        ctx.fillStyle=j===s.len-1?'#0c52c5':'#2476dc';ctx.fillText((s.seed+j)%3?'0':'1',s.x,y);
       }
     }
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `${width < 620 ? 9 : 11}px ui-monospace, SFMono-Regular, Consolas, monospace`;
-    const particleFade = 1 - smooth(clamp((elapsed - 1350) / 750));
-    for (const particle of particles) {
-      const t = clamp((elapsed - particle.delay) / particle.duration);
-      if (t <= 0 || particleFade <= 0) continue;
-      const ease = smooth(t);
-      const x = particle.fromX + (particle.x - particle.fromX) * ease;
-      const y = particle.fromY + (particle.y - particle.fromY) * ease;
-      ctx.globalAlpha = Math.min(1, t * 2) * particleFade * .85;
-      ctx.fillStyle = particle.tint;
-      ctx.fillText(particle.symbol, x, y);
-    }
-    ctx.globalAlpha = 1;
-    if (progressLabel) progressLabel.textContent = `${String(Math.min(100, Math.floor(elapsed / EXIT_AT * 100))).padStart(2, '0')}%`;
-    raf = requestAnimationFrame(draw);
+    // A dense mask of 0 and 1 converges to the very same QBRANCH word position.
+    const vanishing=1-ease(clamp((t-1730)/550));
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`800 ${w<600?8:10}px ui-monospace,monospace`;
+    if(vanishing>0){for(const p of particles){
+      let portion=clamp((t-p.delay)/p.duration);if(!portion)continue;
+      portion=ease(portion);
+      const x=p.fx+(p.x-p.fx)*portion,y=p.fy+(p.y-p.fy)*portion;
+      ctx.globalAlpha=p.alpha*Math.min(1,portion*2)*vanishing;
+      ctx.fillStyle=portion>.87?'#0754d0':'#378df0';ctx.fillText(p.glyph,x,y);
+    }}
+    ctx.globalAlpha=1;
+    if(progress)progress.textContent=String(Math.min(99,Math.floor(t/EXIT_AT*100))).padStart(2,'0')+'%';
+    raf=requestAnimationFrame(render);
   }
-
-  function finish(skipped = false) {
-    if (ending) return;
-    ending = true;
-    cancelAnimationFrame(raf);
-    if (exitTimer) clearTimeout(exitTimer);
-    if (progressLabel) progressLabel.textContent = '100%';
-    intro.classList.add('is-exiting');
-    // Hide and unlock immediately after the exit transition; never leave an invisible blocking overlay.
-    setTimeout(() => {
-      intro.hidden = true;
-      intro.setAttribute('aria-hidden', 'true');
-      root.classList.remove('qb-intro-enabled');
-      stopped = true;
-      if (skipped) {
-        const main = document.getElementById('main-content');
-        if (main) {
-          main.setAttribute('tabindex', '-1');
-          main.focus({ preventScroll: true });
-          main.addEventListener('blur', () => main.removeAttribute('tabindex'), { once: true });
-        }
-      }
-    }, 360);
+  function finish(skipped=false){
+    if(ending)return;ending=true;cancelAnimationFrame(raf);clearTimeout(timer);
+    if(progress)progress.textContent='100%';intro.classList.add('is-exiting');
+    setTimeout(()=>{
+      intro.hidden=true;intro.setAttribute('aria-hidden','true');root.classList.remove('qb-intro-enabled');stopped=true;
+      if(skipped){const main=document.getElementById('main-content');if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});main.addEventListener('blur',()=>main.removeAttribute('tabindex'),{once:true})}}
+    },360);
   }
-
-  skip?.addEventListener('click', () => finish(true));
-  document.addEventListener('keydown', (event) => {
-    if (!ending && event.key === 'Escape') finish(true);
-  });
-  window.addEventListener('pagehide', () => finish(), { once: true });
-  window.addEventListener('resize', () => { if (!ending) setup(); }, { passive: true });
-  setup();
-  raf = requestAnimationFrame(draw);
-  // In throttled background tabs, requestAnimationFrame can pause. The timeout guarantees unlock.
-  exitTimer = setTimeout(() => finish(), EXIT_AT);
+  skip?.addEventListener('click',()=>finish(true));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!ending)finish(true)});
+  addEventListener('pagehide',()=>finish(),{once:true});
+  addEventListener('resize',()=>{if(!ending)setup()},{passive:true});
+  document.fonts?.ready.then(()=>{if(!ending)setup()}).catch(()=>{});
+  setup();raf=requestAnimationFrame(render);
+  timer=setTimeout(()=>finish(),EXIT_AT); // ensures unlock if RAF is paused in background tabs.
 })();
